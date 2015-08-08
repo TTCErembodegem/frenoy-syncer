@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F2B6B9C7-F32F-47E2-A88E-4EA92C623F60}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{82C7F9EC-62D0-47CC-B96D-647492375998}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SiteTTCErembodegem", "src\SiteTTCErembodegem\SiteTTCErembodegem.xproj", "{DE051965-651D-42C4-8C4C-A193167B7AEA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE051965-651D-42C4-8C4C-A193167B7AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE051965-651D-42C4-8C4C-A193167B7AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE051965-651D-42C4-8C4C-A193167B7AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE051965-651D-42C4-8C4C-A193167B7AEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DE051965-651D-42C4-8C4C-A193167B7AEA} = {F2B6B9C7-F32F-47E2-A88E-4EA92C623F60}
+	EndGlobalSection
+EndGlobal
