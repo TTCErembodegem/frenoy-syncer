@@ -3,10 +3,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "angularjs": "1.4.3",
-    "bootstrap": "3.3.5",
-    "font-awesome": "4.4.0",
-    "Microsoft.AspNet.Mvc": "6.0.0-beta6",
+    "Microsoft.AspNet.Mvc": "6.0.0-beta5",
     "Microsoft.AspNet.Server.IIS": "1.0.0-beta5",
     "Microsoft.AspNet.Server.WebListener": "1.0.0-beta5",
     "Microsoft.AspNet.WebApi": "5.2.3",

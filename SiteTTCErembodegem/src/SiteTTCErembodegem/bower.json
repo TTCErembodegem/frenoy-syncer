@@ -1,0 +1,20 @@
+{
+  "name": "SiteTTCErembodegem",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "*",
+    "angular": "*",
+    "Font-Awesome": "*",
+    "jquery": "*"
+  },
+  "exportsOverride": {
+    "bootstrap": {
+      "js": "dist/js/*.*",
+      "css": "dist/css/*.*",
+      "fonts": "dist/fonts/*.*"
+    },
+    "jquery": {
+      "js": "dist/*.*"
+    }
+  }
+}
