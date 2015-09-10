@@ -68,10 +68,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ttc.Model\Ttc.Model.csproj">
-      <Project>{90cc4e3d-11b8-4381-98f4-234585f8658d}</Project>
-      <Name>Ttc.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Ttc.DataAccess\Ttc.DataAccess.csproj">
       <Project>{bdfc6f37-3b94-467b-beee-53ffba49918e}</Project>
       <Name>Ttc.DataAccess</Name>
