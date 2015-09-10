@@ -11,11 +11,21 @@ namespace FrenoySyncer
     {
         static void Main(string[] args)
         {
-            using (var db = new TtcDbContext())
-            {
-                var spelers = db.Spelers.ToArray();
-                var x = spelers;
-            }
+            //using (var db = new TtcDbContext())
+            //{
+            //    var spelers = db.Spelers.ToArray();
+            //    var x = spelers;
+            //}
+
+            // Frenoy GetClubTeams => 
+
+
+
+        }
+
+        public class FrenoyService
+        {
+            
         }
     }
 }
