@@ -24,7 +24,9 @@ namespace Ttc.Model
 
         public int? Jaar { get; set; }
 
-        [Column("LinkID")]
-        public string Link { get; set; }
+        public string LinkID { get; set; }
+
+        public string FrenoyTeamId { get; set; }
+        public int FrenoyDivisionId { get; set; }
     }
 }
