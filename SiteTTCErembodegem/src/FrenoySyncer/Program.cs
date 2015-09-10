@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -118,10 +119,14 @@ namespace FrenoySyncer
                     Season = _options.FrenoySeason,
                     DivisionId = reeks.FrenoyDivisionId.ToString()
                 });
-                foreach (var frenoyMatch in matches.TeamMatchesEntries)
+                foreach (var frenoyMatch in matches.TeamMatchesEntries.Where(x => x.HomeTeam.Trim() != "Vrij" && x.AwayTeam.Trim() != "Vrij"))
                 {
+                    Debug.Assert(frenoyMatch.DateSpecified);
+                    Debug.Assert(frenoyMatch.TimeSpecified);
+
                     var kalender = new Kalender
                     {
+                        FrenoyMatchId = frenoyMatch.MatchId,
                         Datum = frenoyMatch.Date,
                         Uur = frenoyMatch.Time,
                         ThuisClubID = GetClubId(frenoyMatch.HomeClub),
@@ -132,10 +137,27 @@ namespace FrenoySyncer
                         Week = int.Parse(frenoyMatch.WeekName)
                     };
 
-                    kalender.ThuisClubPloegID = GetClubPloegId(reeks.FrenoyDivisionId, kalender.ThuisClubID.Value, kalender.ThuisPloeg);
-                    kalender.UitClubPloegID = GetClubPloegId(reeks.FrenoyDivisionId, kalender.UitClubID.Value, kalender.UitPloeg);
+                    kalender.ThuisClubPloegID = GetClubPloegId(reeks.ID, kalender.ThuisClubID.Value, kalender.ThuisPloeg);
+                    kalender.UitClubPloegID = GetClubPloegId(reeks.ID, kalender.UitClubID.Value, kalender.UitPloeg);
 
                     kalender.Thuis = kalender.ThuisClubID == _thuisClubId ? 1 : 0;
+
+                    // In the db the ThuisClubId is always Erembodegem
+                    if (kalender.Thuis == 1)
+                    {
+                        var thuisClubId = kalender.ThuisClubID;
+                        var thuisPloeg = kalender.ThuisPloeg;
+                        var thuisClubPloegId = kalender.ThuisClubPloegID;
+
+                        kalender.ThuisClubID = kalender.UitClubID;
+                        kalender.ThuisPloeg = kalender.UitPloeg;
+                        kalender.ThuisClubPloegID = kalender.UitClubPloegID;
+
+                        kalender.UitClubID = thuisClubId;
+                        kalender.UitPloeg = thuisPloeg;
+                        kalender.UitClubPloegID = thuisClubPloegId;
+                    }
+
                     _db.Kalender.Add(kalender);
                 }
                 _db.SaveChanges();
@@ -167,10 +189,51 @@ namespace FrenoySyncer
             return null;
         }
 
-        private int GetClubId(string frenoyTeamClub)
+        private int GetClubId(string frenoyClubCode)
         {
-            var club = _db.Clubs.Single(x => x.CodeVTTL == frenoyTeamClub);
+            var club = _db.Clubs.SingleOrDefault(x => x.CodeVTTL == frenoyClubCode);
+            if (club == null)
+            {
+                club = CreateClub(frenoyClubCode);
+            }
             return club.ID;
+        }
+
+        private Club CreateClub(string frenoyClubCode)
+        {
+            var frenoyClub = _frenoy.GetClubs(new GetClubs
+            {
+                Club = frenoyClubCode,
+                Season = _options.FrenoySeason
+            });
+            Debug.Assert(frenoyClub.ClubEntries.Count() == 1);
+
+            var club = new Club
+            {
+                CodeVTTL = frenoyClubCode,
+                Actief = 1,
+                Naam = frenoyClub.ClubEntries.First().LongName,
+                Douche = 0
+            };
+            _db.Clubs.Add(club);
+            _db.SaveChanges();
+
+            foreach (var frenoyLokaal in frenoyClub.ClubEntries.First().VenueEntries)
+            {
+                var lokaal = new ClubLokaal
+                {
+                    ClubId = club.ID,
+                    Telefoon = frenoyLokaal.Phone,
+                    Lokaal = frenoyLokaal.Name,
+                    Adres = frenoyLokaal.Street,
+                    Postcode = int.Parse(frenoyLokaal.Town.Substring(0, frenoyLokaal.Town.IndexOf(" "))),
+                    Gemeente = frenoyLokaal.Town.Substring(frenoyLokaal.Town.IndexOf(" ") + 1),
+                    Hoofd = 1
+                };
+                _db.ClubLokalen.Add(lokaal);
+            }
+
+            return club;
         }
 
         public void Dispose()

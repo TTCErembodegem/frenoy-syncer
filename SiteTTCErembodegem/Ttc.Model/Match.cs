@@ -37,5 +37,7 @@ namespace Ttc.Model
         public int? Thuis { get; set; }
 
         public string GeleideTraining { get; set; }
+
+        public string FrenoyMatchId { get; set; }
     }
 }
