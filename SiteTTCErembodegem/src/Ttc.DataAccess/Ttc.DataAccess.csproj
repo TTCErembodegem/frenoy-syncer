@@ -57,10 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201509102130158_Initial.cs" />
-    <Compile Include="Migrations\201509102130158_Initial.Designer.cs">
-      <DependentUpon>201509102130158_Initial.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="TtcDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,9 +73,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509102130158_Initial.resx">
-      <DependentUpon>201509102130158_Initial.cs</DependentUpon>
-    </EmbeddedResource>
+    <Content Include="Migrations\FrenoyLink.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

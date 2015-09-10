@@ -19,12 +19,11 @@ namespace Ttc.DataAccess
         }
 
         public DbSet<Ttc.Model.Speler> Spelers { get; set; }
-        public DbSet<Ttc.Model.Match> Matches { get; set; }
+        public DbSet<Ttc.Model.Kalender> Kalender { get; set; }
         public DbSet<Ttc.Model.Club> Clubs { get; set; }
         public DbSet<Ttc.Model.ClubLokaal> ClubLokalen { get; set; }
-        public DbSet<Ttc.Model.ClubPloeg> Ploegen { get; set; }
-        public DbSet<Ttc.Model.ClubPloegSpeler> PloegSpelers { get; set; }
-        //public DbSet<Ttc.Model.ContactInfoClub> ContactInfo { get; set; }
+        public DbSet<Ttc.Model.ClubPloeg> ClubPloegen { get; set; }
+        public DbSet<Ttc.Model.ClubPloegSpeler> ClubPloegSpelers { get; set; }
         public DbSet<Ttc.Model.Klassement> Klassementen { get; set; }
         public DbSet<Ttc.Model.Reeks> Reeksen { get; set; }
         public DbSet<Ttc.Model.Training> Trainingen { get; set; }

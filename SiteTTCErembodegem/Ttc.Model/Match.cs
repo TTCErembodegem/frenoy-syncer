@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Ttc.Model
 {
     [Table("kalender")]
-    public class Match
+    public class Kalender
     {
         [Key]
         public int ID { get; set; }

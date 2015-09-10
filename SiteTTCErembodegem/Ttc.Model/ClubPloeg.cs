@@ -19,11 +19,11 @@ namespace Ttc.Model
         // Foreign Key voor Club
         public int? ClubId { get; set; }
 
-        [ForeignKey("ClubId")]
-        public Club Club { get; set; }
+        //[ForeignKey("ClubId")]
+        //public Club Club { get; set; }
 
-        [ForeignKey("ReeksId")]
-        public Reeks Reeks { get; set; }
+        //[ForeignKey("ReeksId")]
+        //public Reeks Reeks { get; set; }
 
         public string Code { get; set; }
     }
