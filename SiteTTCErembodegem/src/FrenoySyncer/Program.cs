@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,30 +21,54 @@ namespace FrenoySyncer
         // Frenoy Divisions => Prov 3C
         //const string FrenoyVttlWsdlUrl = "http://api.vttl.be/0.7/?wsdl";
         //const string FrenoySportaWsdlUrl = "http://tafeltennis.sporcrea.be/api/?wsdl";
+
         static void Main(string[] args)
         {
-            var options = new FrenoySyncOptions
-            {
-                FrenoyClub = "OVL134",
-                FrenoySeason = "16",
-                Jaar = 2015,
-                Competitie = "VTTL",
-                ReeksType = "Prov"
-            };
+            //var options = new FrenoySyncOptions
+            //{
+            //    FrenoyClub = "OVL134",
+            //    FrenoySeason = "16",
+            //    Jaar = 2015,
+            //    Competitie = "VTTL",
+            //    ReeksType = "Prov",
+            //    Players = new Dictionary<string, string[]>
+            //    {
+            //        ["A"] = new[] { "Dirk DS.", "Kharmis", "Jorn", "Sami", "Jurgen E.", "Wouter" },
+            //        ["B"] = new[] { "Bart", "Gerdo", "Jens", "Dimitri", "Patrick", "Geert" },
+            //        ["C"] = new[] { "Thomas", "Dirk B", "Jelle", "Arne", "Laurens", "Hugo" },
+            //        ["D"] = new[] { "Jan", "Marc", "Luc", "Maarten", "Veerle", "Patrick DS" },
+            //        ["E"] = new[] { "Dirk K.", "Leo", "Dries", "Guy", "Peter N", "Tuur", "Peter V" },
+            //        ["F"] = new[] { "Tim", "Etienne", "Thierry", "Rudi", "Marnix", "Daniel", "Wim" }
+            //    }
+            //};
 
-            using (var vttl = new FrenoySync(options))
-            {
-                vttl.Sync();
-            }
+            //using (var vttl = new FrenoySync(options))
+            //{
+            //    vttl.Sync();
+            //}
 
             var sportaOptions = new FrenoySyncOptions
             {
-                FrenoyClub = "",
+                FrenoyClub = "4055",
                 FrenoySeason = "16",
                 Jaar = 2015,
                 Competitie = "Sporta",
-                ReeksType = "Afd"
+                ReeksType = "Afd",
+                Players = new Dictionary<string, string[]>
+                {
+                    ["A"] = new[] { "Dirk DS.", "Kharmis", "Jorn", "Sami", "Wouter" },
+                    ["B"] = new[] { "Bart", "Patrick", "Geert", "Dirk B", "Jelle" },
+                    ["C"] = new[] { "Dries", "Maarten", "Luc", "Jan", "Veerle" },
+                    ["D"] = new[] { "Leo", "Guy", "Patrick", "Tuur", "Peter V" },
+                    ["E"] = new[] { "Dirk K.", "Etienne", "Peter N", "Marnix", "Thierry", "Martin" },
+                    ["F"] = new[] { "Tim", "Rudi", "Daniel", "Tim", "Ettienne C.", "Myriam", "Wim", "Martin" }
+                }
             };
+
+            using (var sporta = new FrenoySync(sportaOptions, false))
+            {
+                sporta.Sync();
+            }
         }
     }
 
@@ -53,20 +79,42 @@ namespace FrenoySyncer
         public string Competitie { get; set; }
         public string ReeksType { get; set; }
         public int Jaar { get; set; }
+
+        /// <summary>
+        /// Keys = TeamCode
+        /// Values = Players with first player = Captain
+        /// </summary>
+        public Dictionary<string, string[]> Players { get; set; }
     }
 
     public class FrenoySync : IDisposable
     {
         private readonly TtcDbContext _db;
         private readonly FrenoySyncOptions _options;
-        private readonly TabTAPI_PortTypeClient _frenoy = new FrenoyVttl.TabTAPI_PortTypeClient();
+        private readonly TabTAPI_PortTypeClient _frenoy;
         private readonly int _thuisClubId;
+        private readonly bool _isVttl;
 
-        public FrenoySync(FrenoySyncOptions options)
+        public FrenoySync(FrenoySyncOptions options, bool isVttl = true)
         {
             _db = new TtcDbContext();
             _options = options;
-            _thuisClubId = _db.Clubs.Single(x => x.CodeVTTL == options.FrenoyClub).ID;
+            _isVttl = isVttl;
+            if (isVttl)
+            {
+                _thuisClubId = _db.Clubs.Single(x => x.CodeVTTL == options.FrenoyClub).ID;
+                _frenoy = new FrenoyVttl.TabTAPI_PortTypeClient();
+            }
+            else
+            {
+                // Sporta
+                _thuisClubId = _db.Clubs.Single(x => x.CodeSporta == options.FrenoyClub).ID;
+
+                var sportaBinding = new BasicHttpBinding();
+                sportaBinding.Security.Mode = BasicHttpSecurityMode.None;
+                var sportaEndpoint = new EndpointAddress("http://tafeltennis.sporcrea.be/api/?wsdl");
+                _frenoy = new TabTAPI_PortTypeClient(sportaBinding, sportaEndpoint);
+            }
         }
 
         public void Sync()
@@ -77,23 +125,10 @@ namespace FrenoySyncer
                 Season = _options.FrenoySeason
             });
 
-            var reeksRegex = new Regex(@"Afdeling (\d+)(\w+)");
             foreach (var frenoyTeam in frenoyTeams.TeamEntries)
             {
                 // Create new division=reeks for each team in the club
-                var reeks = new Reeks();
-                reeks.Competitie = _options.Competitie;
-                reeks.ReeksType = _options.ReeksType;
-                reeks.Jaar = _options.Jaar;
-
-                var reeksMatch = reeksRegex.Match(frenoyTeam.DivisionName);
-                reeks.ReeksNummer = reeksMatch.Groups[1].Value;
-                reeks.ReeksCode = reeksMatch.Groups[2].Value;
-                reeks.LinkID = $"{frenoyTeam.DivisionId}_{frenoyTeam.Team}";
-
-                reeks.FrenoyDivisionId = int.Parse(frenoyTeam.DivisionId);
-                reeks.FrenoyTeamId = frenoyTeam.TeamId;
-
+                Reeks reeks = CreateReeks(frenoyTeam);
                 _db.Reeksen.Add(reeks);
                 _db.SaveChanges();
 
@@ -106,7 +141,25 @@ namespace FrenoySyncer
                 });
                 foreach (var frenoyTeamsInDivision in frenoyDivision.RankingEntries)
                 {
-                    AddClubPloeg(reeks, frenoyTeamsInDivision);
+                    var clubPloeg = CreateClubPloeg(reeks, frenoyTeamsInDivision);
+                    _db.ClubPloegen.Add(clubPloeg);
+                }
+                _db.SaveChanges();
+
+
+
+                // Add players to the home team
+                var ploeg = _db.ClubPloegen.Single(x => x.ClubId == _thuisClubId && x.ReeksId == reeks.ID);
+                var players = _options.Players[ploeg.Code];
+                foreach (var playerName in players)
+                {
+                    var clubPloegSpeler = new ClubPloegSpeler
+                    {
+                        Kapitein = playerName == players.First() ? 1 : 0,
+                        SpelerID = GetSpelerId(playerName),
+                        ClubPloegID = ploeg.ID
+                    };
+                    _db.ClubPloegSpelers.Add(clubPloegSpeler);
                 }
                 _db.SaveChanges();
 
@@ -124,44 +177,82 @@ namespace FrenoySyncer
                     Debug.Assert(frenoyMatch.DateSpecified);
                     Debug.Assert(frenoyMatch.TimeSpecified);
 
-                    var kalender = new Kalender
-                    {
-                        FrenoyMatchId = frenoyMatch.MatchId,
-                        Datum = frenoyMatch.Date,
-                        Uur = frenoyMatch.Time,
-                        ThuisClubID = GetClubId(frenoyMatch.HomeClub),
-                        ThuisPloeg = ExtractTeamCodeFromFrenoyName(frenoyMatch.HomeTeam),
-                        UitClubID = GetClubId(frenoyMatch.AwayClub),
-                        UitPloeg = ExtractTeamCodeFromFrenoyName(frenoyMatch.AwayTeam),
-                        UitClubPloegID = 0,
-                        Week = int.Parse(frenoyMatch.WeekName)
-                    };
-
-                    kalender.ThuisClubPloegID = GetClubPloegId(reeks.ID, kalender.ThuisClubID.Value, kalender.ThuisPloeg);
-                    kalender.UitClubPloegID = GetClubPloegId(reeks.ID, kalender.UitClubID.Value, kalender.UitPloeg);
-
-                    kalender.Thuis = kalender.ThuisClubID == _thuisClubId ? 1 : 0;
-
-                    // In the db the ThuisClubId is always Erembodegem
-                    if (kalender.Thuis == 1)
-                    {
-                        var thuisClubId = kalender.ThuisClubID;
-                        var thuisPloeg = kalender.ThuisPloeg;
-                        var thuisClubPloegId = kalender.ThuisClubPloegID;
-
-                        kalender.ThuisClubID = kalender.UitClubID;
-                        kalender.ThuisPloeg = kalender.UitPloeg;
-                        kalender.ThuisClubPloegID = kalender.UitClubPloegID;
-
-                        kalender.UitClubID = thuisClubId;
-                        kalender.UitPloeg = thuisPloeg;
-                        kalender.UitClubPloegID = thuisClubPloegId;
-                    }
-
+                    Kalender kalender = CreateKalenderMatch(reeks, frenoyMatch);
                     _db.Kalender.Add(kalender);
                 }
                 _db.SaveChanges();
             }
+        }
+
+        private int GetSpelerId(string playerName)
+        {
+            var speler = _db.Spelers.Single(x => x.NaamKort == playerName);
+            return speler.ID;
+        }
+
+        private readonly static Regex VttlReeksRegex = new Regex(@"Afdeling (\d+)(\w+)");
+        private readonly static Regex SportaReeksRegex = new Regex(@"^(\d)(\w?)");
+        private Reeks CreateReeks(TeamEntryType frenoyTeam)
+        {
+            var reeks = new Reeks();
+            reeks.Competitie = _options.Competitie;
+            reeks.ReeksType = _options.ReeksType;
+            reeks.Jaar = _options.Jaar;
+            reeks.LinkID = $"{frenoyTeam.DivisionId}_{frenoyTeam.Team}";
+
+            if (_isVttl)
+            {
+                var reeksMatch = VttlReeksRegex.Match(frenoyTeam.DivisionName);
+                reeks.ReeksNummer = reeksMatch.Groups[1].Value;
+                reeks.ReeksCode = reeksMatch.Groups[2].Value;
+            }
+            else
+            {
+                var reeksMatch = SportaReeksRegex.Match(frenoyTeam.DivisionName);
+                reeks.ReeksNummer = reeksMatch.Groups[1].Value;
+                reeks.ReeksCode = reeksMatch.Groups[2].Value;
+            }
+
+            reeks.FrenoyDivisionId = int.Parse(frenoyTeam.DivisionId);
+            reeks.FrenoyTeamId = frenoyTeam.TeamId;
+            return reeks;
+        }
+
+        private Kalender CreateKalenderMatch(Reeks reeks, TeamMatchEntryType frenoyMatch)
+        {
+            var kalender = new Kalender
+            {
+                FrenoyMatchId = frenoyMatch.MatchId,
+                Datum = frenoyMatch.Date,
+                Uur = frenoyMatch.Time,
+                ThuisClubID = GetClubId(frenoyMatch.HomeClub),
+                ThuisPloeg = ExtractTeamCodeFromFrenoyName(frenoyMatch.HomeTeam),
+                UitClubID = GetClubId(frenoyMatch.AwayClub),
+                UitPloeg = ExtractTeamCodeFromFrenoyName(frenoyMatch.AwayTeam),
+                Week = int.Parse(frenoyMatch.WeekName)
+            };
+
+            kalender.ThuisClubPloegID = GetClubPloegId(reeks.ID, kalender.ThuisClubID.Value, kalender.ThuisPloeg);
+            kalender.UitClubPloegID = GetClubPloegId(reeks.ID, kalender.UitClubID.Value, kalender.UitPloeg);
+
+            // In the db the ThuisClubId is always Erembodegem
+            kalender.Thuis = kalender.ThuisClubID == _thuisClubId ? 1 : 0;
+            if (kalender.Thuis == 1)
+            {
+                var thuisClubId = kalender.ThuisClubID;
+                var thuisPloeg = kalender.ThuisPloeg;
+                var thuisClubPloegId = kalender.ThuisClubPloegID;
+
+                kalender.ThuisClubID = kalender.UitClubID;
+                kalender.ThuisPloeg = kalender.UitPloeg;
+                kalender.ThuisClubPloegID = kalender.UitClubPloegID;
+
+                kalender.UitClubID = thuisClubId;
+                kalender.UitPloeg = thuisPloeg;
+                kalender.UitClubPloegID = thuisClubPloegId;
+            }
+
+            return kalender;
         }
 
         private int GetClubPloegId(int reeksId, int clubId, string ploeg)
@@ -170,13 +261,13 @@ namespace FrenoySyncer
             return cb.ID;
         }
 
-        private void AddClubPloeg(Reeks reeks, RankingEntryType frenoyTeam)
+        private ClubPloeg CreateClubPloeg(Reeks reeks, RankingEntryType frenoyTeam)
         {
             var clubPloeg = new ClubPloeg();
             clubPloeg.ReeksId = reeks.ID;
             clubPloeg.ClubId = GetClubId(frenoyTeam.TeamClub);
             clubPloeg.Code = ExtractTeamCodeFromFrenoyName(frenoyTeam.Team);
-            _db.ClubPloegen.Add(clubPloeg);
+            return clubPloeg;
         }
 
         private static readonly Regex ClubHasTeamCodeRegex = new Regex(@"\w$");
@@ -191,7 +282,15 @@ namespace FrenoySyncer
 
         private int GetClubId(string frenoyClubCode)
         {
-            var club = _db.Clubs.SingleOrDefault(x => x.CodeVTTL == frenoyClubCode);
+            Club club;
+            if (_isVttl)
+            {
+                club = _db.Clubs.SingleOrDefault(x => x.CodeVTTL == frenoyClubCode);
+            }
+            else
+            {
+                club = _db.Clubs.SingleOrDefault(x => x.CodeSporta == frenoyClubCode);
+            }
             if (club == null)
             {
                 club = CreateClub(frenoyClubCode);
@@ -201,6 +300,7 @@ namespace FrenoySyncer
 
         private Club CreateClub(string frenoyClubCode)
         {
+            Debug.Assert(_isVttl, "or need to write an if");
             var frenoyClub = _frenoy.GetClubs(new GetClubs
             {
                 Club = frenoyClubCode,

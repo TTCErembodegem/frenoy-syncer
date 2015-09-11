@@ -19,10 +19,12 @@ namespace Ttc.Model
         // Foreign Key voor Speler
         public int? SpelerID { get; set; }
 
-        [ForeignKey("ClubPloegID")]
-        public ClubPloeg Ploeg { get; set; }
+        public int Kapitein { get; set; }
 
-        [ForeignKey("SpelerID")]
-        public Speler Speler { get; set; }
+        //[ForeignKey("ClubPloegID")]
+        //public ClubPloeg Ploeg { get; set; }
+
+        //[ForeignKey("SpelerID")]
+        //public Speler Speler { get; set; }
     }
 }
