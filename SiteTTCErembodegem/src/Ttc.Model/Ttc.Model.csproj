@@ -46,7 +46,6 @@
     <Compile Include="ClubLokaal.cs" />
     <Compile Include="ClubPloeg.cs" />
     <Compile Include="ClubPloegSpeler.cs" />
-    <Compile Include="ContactInfoClub.cs" />
     <Compile Include="Klassement.cs" />
     <Compile Include="Match.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

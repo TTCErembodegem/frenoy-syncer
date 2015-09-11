@@ -5,16 +5,11 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F2B6B9C7-F32F-47E2-A88E-4EA92C623F60}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{82C7F9EC-62D0-47CC-B96D-647492375998}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ttc.DataAccess", "src\Ttc.DataAccess\Ttc.DataAccess.csproj", "{BDFC6F37-3B94-467B-BEEE-53FFBA49918E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenoySyncer", "src\FrenoySyncer\FrenoySyncer.csproj", "{D3FDABD3-8D5F-4A24-8AE9-7BAAED1D62C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ttc.Model", "Ttc.Model\Ttc.Model.csproj", "{321DCBAD-1302-400F-8532-74209420B126}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ttc.Model", "src\Ttc.Model\Ttc.Model.csproj", "{321DCBAD-1302-400F-8532-74209420B126}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,9 +32,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{BDFC6F37-3B94-467B-BEEE-53FFBA49918E} = {F2B6B9C7-F32F-47E2-A88E-4EA92C623F60}
-		{D3FDABD3-8D5F-4A24-8AE9-7BAAED1D62C8} = {F2B6B9C7-F32F-47E2-A88E-4EA92C623F60}
 	EndGlobalSection
 EndGlobal

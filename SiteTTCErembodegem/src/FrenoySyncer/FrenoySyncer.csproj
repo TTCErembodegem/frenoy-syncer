@@ -125,13 +125,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ttc.Model\Ttc.Model.csproj">
-      <Project>{321dcbad-1302-400f-8532-74209420b126}</Project>
-      <Name>Ttc.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Ttc.DataAccess\Ttc.DataAccess.csproj">
       <Project>{bdfc6f37-3b94-467b-beee-53ffba49918e}</Project>
       <Name>Ttc.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ttc.Model\Ttc.Model.csproj">
+      <Project>{321dcbad-1302-400f-8532-74209420b126}</Project>
+      <Name>Ttc.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
