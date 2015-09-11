@@ -17,35 +17,30 @@ namespace FrenoySyncer
 {
     class Program
     {
-        // Frenoy GetClubTeams => The Teams within a Club. Each ClubTeam plays in a Division
-        // Frenoy Divisions => Prov 3C
-        //const string FrenoyVttlWsdlUrl = "http://api.vttl.be/0.7/?wsdl";
-        //const string FrenoySportaWsdlUrl = "http://tafeltennis.sporcrea.be/api/?wsdl";
-
         static void Main(string[] args)
         {
-            //var options = new FrenoySyncOptions
-            //{
-            //    FrenoyClub = "OVL134",
-            //    FrenoySeason = "16",
-            //    Jaar = 2015,
-            //    Competitie = "VTTL",
-            //    ReeksType = "Prov",
-            //    Players = new Dictionary<string, string[]>
-            //    {
-            //        ["A"] = new[] { "Dirk DS.", "Kharmis", "Jorn", "Sami", "Jurgen E.", "Wouter" },
-            //        ["B"] = new[] { "Bart", "Gerdo", "Jens", "Dimitri", "Patrick", "Geert" },
-            //        ["C"] = new[] { "Thomas", "Dirk B", "Jelle", "Arne", "Laurens", "Hugo" },
-            //        ["D"] = new[] { "Jan", "Marc", "Luc", "Maarten", "Veerle", "Patrick DS" },
-            //        ["E"] = new[] { "Dirk K.", "Leo", "Dries", "Guy", "Peter N", "Tuur", "Peter V" },
-            //        ["F"] = new[] { "Tim", "Etienne", "Thierry", "Rudi", "Marnix", "Daniel", "Wim" }
-            //    }
-            //};
+            var options = new FrenoySyncOptions
+            {
+                FrenoyClub = "OVL134",
+                FrenoySeason = "16",
+                Jaar = 2015,
+                Competitie = "VTTL",
+                ReeksType = "Prov",
+                Players = new Dictionary<string, string[]>
+                {
+                    ["A"] = new[] { "Dirk DS.", "Kharmis", "Jorn", "Sami", "Jurgen E.", "Wouter" },
+                    ["B"] = new[] { "Bart", "Gerdo", "Jens", "Dimitri", "Patrick", "Geert" },
+                    ["C"] = new[] { "Thomas", "Dirk B", "Jelle", "Arne", "Laurens", "Hugo" },
+                    ["D"] = new[] { "Jan", "Marc", "Luc", "Maarten", "Veerle", "Patrick DS" },
+                    ["E"] = new[] { "Dirk K.", "Leo", "Dries", "Guy", "Peter N", "Tuur", "Peter V" },
+                    ["F"] = new[] { "Tim", "Etienne", "Thierry", "Rudi", "Marnix", "Daniel", "Wim" }
+                }
+            };
 
-            //using (var vttl = new FrenoySync(options))
-            //{
-            //    vttl.Sync();
-            //}
+            using (var vttl = new FrenoySync(options))
+            {
+                vttl.Sync();
+            }
 
             var sportaOptions = new FrenoySyncOptions
             {
@@ -72,6 +67,10 @@ namespace FrenoySyncer
         }
     }
 
+    /// <summary>
+    /// Frenoy GetClubTeams => The Teams within a Club. Each ClubTeam plays in a Division
+    /// Frenoy Divisions => Prov 3C
+    /// </summary>
     public class FrenoySyncOptions
     {
         public string FrenoyClub { get; set; }
@@ -89,6 +88,9 @@ namespace FrenoySyncer
 
     public class FrenoySync : IDisposable
     {
+        const string FrenoyVttlWsdlUrl = "http://api.vttl.be/0.7/?wsdl";
+        const string FrenoySportaWsdlUrl = "http://tafeltennis.sporcrea.be/api/?wsdl";
+
         private readonly TtcDbContext _db;
         private readonly FrenoySyncOptions _options;
         private readonly TabTAPI_PortTypeClient _frenoy;
@@ -98,27 +100,30 @@ namespace FrenoySyncer
         public FrenoySync(FrenoySyncOptions options, bool isVttl = true)
         {
             _db = new TtcDbContext();
+            _db.Database.Log = Console.Write;
+            CheckPlayers();
+
             _options = options;
             _isVttl = isVttl;
+
+            string wsdl;
             if (isVttl)
             {
                 _thuisClubId = _db.Clubs.Single(x => x.CodeVTTL == options.FrenoyClub).ID;
-                _frenoy = new FrenoyVttl.TabTAPI_PortTypeClient();
+                wsdl = FrenoyVttlWsdlUrl;
             }
             else
             {
                 // Sporta
                 _thuisClubId = _db.Clubs.Single(x => x.CodeSporta == options.FrenoyClub).ID;
-
-                //var sportaBinding = new BasicHttpBinding();
-                //sportaBinding.Security.Mode = BasicHttpSecurityMode.None;
-                //var sportaEndpoint = new EndpointAddress("http://tafeltennis.sporcrea.be/api/?wsdl");
-                //_frenoy = new TabTAPI_PortTypeClient(sportaBinding, sportaEndpoint);
-
-                _frenoy = new FrenoyVttl.TabTAPI_PortTypeClient();
+                wsdl = FrenoySportaWsdlUrl;
             }
 
-            CheckPlayers();
+            //var sportaBinding = new BasicHttpBinding();
+            //sportaBinding.Security.Mode = BasicHttpSecurityMode.None;
+            //var sportaEndpoint = new EndpointAddress(wsdl);
+            //_frenoy = new TabTAPI_PortTypeClient(sportaBinding, sportaEndpoint);
+            _frenoy = new FrenoyVttl.TabTAPI_PortTypeClient();
         }
 
         [Conditional("DEBUG")]
@@ -145,7 +150,9 @@ namespace FrenoySyncer
                 Season = _options.FrenoySeason
             });
 
-            foreach (var frenoyTeam in frenoyTeams.TeamEntries)
+            return;
+
+            foreach (var frenoyTeam in frenoyTeams.TeamEntries.Take(1))
             {
                 // Create new division=reeks for each team in the club
                 Reeks reeks = CreateReeks(frenoyTeam);
