@@ -12,7 +12,7 @@ namespace FrenoySyncer
 {
     public class FrenoySync : IDisposable
     {
-        #region Fields & Constructor
+        #region Fields
         const string FrenoyVttlWsdlUrl = "http://api.vttl.be/0.7/?wsdl";
         const string FrenoySportaWsdlUrl = "http://tafeltennis.sporcrea.be/api/?wsdl";
 
@@ -23,12 +23,18 @@ namespace FrenoySyncer
         private readonly bool _isVttl;
         //private readonly FileInfo _logFileInfo;
         //private readonly StreamWriter _logFile;
+        #endregion
 
+        #region Constructor
         public FrenoySync(FrenoySyncOptions options, bool isVttl = true)
         {
             _db = new TtcDbContext();
             //_logFileInfo = new FileInfo(@"C:\temp\log" + DateTime.Now.ToString("hh:mm:ss").Replace(":", "") + ".txt");
             //_logFile = new StreamWriter(_logFileInfo.FullName);
+            _db.Database.Log = message => _log.AppendLine(message);
+
+            // TODO: The logs contain parameters without the values, so the queries are useless
+            // -> Perhaps Glimpse can help here? It got some parameter replacement thingie
 
             _options = options;
             CheckPlayers();
@@ -162,10 +168,10 @@ namespace FrenoySyncer
         private void CommitChanges()
         {
             //_db.Database.Log = Console.Write;
-            _db.Database.Log = message => _log.AppendLine(message);
+            //_db.Database.Log = message => _log.AppendLine(message);
             //_db.Database.Log = _logFile.Write;
             _db.SaveChanges();
-            _db.Database.Log = null;
+            //_db.Database.Log = null;
         }
         #endregion
 
