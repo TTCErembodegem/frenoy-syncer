@@ -29,9 +29,10 @@ namespace FrenoySyncer
         public FrenoySync(FrenoySyncOptions options, bool isVttl = true)
         {
             _db = new TtcDbContext();
+            // TODO: Pointless to use the EF logging: Parameter values are not part of the output...
             //_logFileInfo = new FileInfo(@"C:\temp\log" + DateTime.Now.ToString("hh:mm:ss").Replace(":", "") + ".txt");
             //_logFile = new StreamWriter(_logFileInfo.FullName);
-            _db.Database.Log = message => _log.AppendLine(message);
+            //_db.Database.Log = message => _log.AppendLine(message);
 
             // TODO: The logs contain parameters without the values, so the queries are useless
             // -> Perhaps Glimpse can help here? It got some parameter replacement thingie
@@ -40,17 +41,17 @@ namespace FrenoySyncer
             CheckPlayers();
 
             _isVttl = isVttl;
-            string wsdl;
+            //string wsdl;
             if (isVttl)
             {
                 _thuisClubId = _db.Clubs.Single(x => x.CodeVTTL == options.FrenoyClub).ID;
-                wsdl = FrenoyVttlWsdlUrl;
+                //wsdl = FrenoyVttlWsdlUrl;
             }
             else
             {
                 // Sporta
                 _thuisClubId = _db.Clubs.Single(x => x.CodeSporta == options.FrenoyClub).ID;
-                wsdl = FrenoySportaWsdlUrl;
+                //wsdl = FrenoySportaWsdlUrl;
             }
 
             // Aparently the signatures for VTTL and Sporta are not identical
@@ -84,14 +85,14 @@ namespace FrenoySyncer
         #region Public API
         public void WriteLog()
         {
-            var queries = _log.ToString();
+            //var queries = _log.ToString();
 
-            var nonQuery = new Regex(@"^(Opened connection|Started transaction|Committed transaction|Closed connection|Disposed transaction|--).*$", RegexOptions.Multiline);
-            queries = nonQuery.Replace(queries, "");
+            //var nonQuery = new Regex(@"^(Opened connection|Started transaction|Committed transaction|Closed connection|Disposed transaction|--).*$", RegexOptions.Multiline);
+            //queries = nonQuery.Replace(queries, "");
             //queries = queries.Replace("SET SESSION sql_mode='ANSI';", "");
             //queries = Regex.Replace(queries, @"(\r|\n){2,}", "\r\n");
 
-            File.WriteAllText(@"C:\temp\log" + DateTime.Now.ToString("hh:mm:ss").Replace(":", "") + "_" + (_isVttl ? "VTTL" : "Sporta") + ".txt", queries);
+            //File.WriteAllText(@"C:\temp\log" + DateTime.Now.ToString("hh:mm:ss").Replace(":", "") + "_" + (_isVttl ? "VTTL" : "Sporta") + ".txt", queries);
         }
 
         public void Sync()
@@ -164,7 +165,7 @@ namespace FrenoySyncer
         #endregion
 
         #region Logging
-        private readonly StringBuilder _log = new StringBuilder();
+        //private readonly StringBuilder _log = new StringBuilder();
         private void CommitChanges()
         {
             //_db.Database.Log = Console.Write;

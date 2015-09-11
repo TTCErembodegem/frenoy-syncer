@@ -36,6 +36,4 @@ namespace Ttc.DataAccess
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }
-
-    
 }

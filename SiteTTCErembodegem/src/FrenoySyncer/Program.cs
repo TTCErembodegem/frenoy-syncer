@@ -9,10 +9,10 @@ namespace FrenoySyncer
 {
     class Program
     {
-        #region Configuration
-        const string FrenoyVttlWsdlUrl = "http://api.vttl.be/0.7/?wsdl";
-        const string FrenoySportaWsdlUrl = "http://tafeltennis.sporcrea.be/api/?wsdl";
+        //const string FrenoyVttlWsdlUrl = "http://api.vttl.be/0.7/?wsdl";
+        //const string FrenoySportaWsdlUrl = "http://tafeltennis.sporcrea.be/api/?wsdl";
 
+        #region Configuration
         private static FrenoySyncOptions VttlOptions => new FrenoySyncOptions
         {
             FrenoyClub = "OVL134",
@@ -52,16 +52,16 @@ namespace FrenoySyncer
 
         static void Main(string[] args)
         {
-            using (var vttl = new FrenoySync(VttlOptions))
-            {
-                vttl.Sync();
-                vttl.WriteLog();
-            }
+            //using (var vttl = new FrenoySync(VttlOptions))
+            //{
+            //    vttl.Sync();
+            //    vttl.WriteLog();
+            //}
 
             using (var sporta = new FrenoySync(SportaOptions, false))
             {
-                //sporta.Sync();
-                //sporta.WriteLog();
+                sporta.Sync();
+                sporta.WriteLog();
             }
 
             //Console.WriteLine("All done");
