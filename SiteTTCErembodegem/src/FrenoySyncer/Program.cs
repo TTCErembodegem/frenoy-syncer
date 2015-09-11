@@ -61,7 +61,7 @@ namespace FrenoySyncer
                     ["C"] = new[] { "Dries", "Maarten", "Luc", "Jan", "Veerle" },
                     ["D"] = new[] { "Leo", "Guy", "Patrick", "Tuur", "Peter V" },
                     ["E"] = new[] { "Dirk K.", "Etienne", "Peter N", "Marnix", "Thierry", "Martin" },
-                    ["F"] = new[] { "Tim", "Rudi", "Daniel", "Tim", "Ettienne C.", "Myriam", "Wim", "Martin" }
+                    ["F"] = new[] { "Tim", "Rudi", "Daniel", "Tim", "Etienne C.", "Myriam", "Wim", "Martin" }
                 }
             };
 
@@ -110,10 +110,30 @@ namespace FrenoySyncer
                 // Sporta
                 _thuisClubId = _db.Clubs.Single(x => x.CodeSporta == options.FrenoyClub).ID;
 
-                var sportaBinding = new BasicHttpBinding();
-                sportaBinding.Security.Mode = BasicHttpSecurityMode.None;
-                var sportaEndpoint = new EndpointAddress("http://tafeltennis.sporcrea.be/api/?wsdl");
-                _frenoy = new TabTAPI_PortTypeClient(sportaBinding, sportaEndpoint);
+                //var sportaBinding = new BasicHttpBinding();
+                //sportaBinding.Security.Mode = BasicHttpSecurityMode.None;
+                //var sportaEndpoint = new EndpointAddress("http://tafeltennis.sporcrea.be/api/?wsdl");
+                //_frenoy = new TabTAPI_PortTypeClient(sportaBinding, sportaEndpoint);
+
+                _frenoy = new FrenoyVttl.TabTAPI_PortTypeClient();
+            }
+
+            CheckPlayers();
+        }
+
+        [Conditional("DEBUG")]
+        private void CheckPlayers()
+        {
+            foreach (string player in _options.Players.Values.SelectMany(x => x))
+            {
+                try
+                {
+                    GetSpelerId(player);
+                }
+                catch (Exception)
+                {
+                    throw new Exception("No player with NaamKort " + player);
+                }
             }
         }
 
@@ -149,7 +169,7 @@ namespace FrenoySyncer
 
 
                 // Add players to the home team
-                var ploeg = _db.ClubPloegen.Single(x => x.ClubId == _thuisClubId && x.ReeksId == reeks.ID);
+                var ploeg = _db.ClubPloegen.Single(x => x.ClubId == _thuisClubId && x.ReeksId == reeks.ID && x.Code == frenoyTeam.Team);
                 var players = _options.Players[ploeg.Code];
                 foreach (var playerName in players)
                 {
@@ -208,7 +228,7 @@ namespace FrenoySyncer
             }
             else
             {
-                var reeksMatch = SportaReeksRegex.Match(frenoyTeam.DivisionName);
+                var reeksMatch = SportaReeksRegex.Match(frenoyTeam.DivisionName.Trim());
                 reeks.ReeksNummer = reeksMatch.Groups[1].Value;
                 reeks.ReeksCode = reeksMatch.Groups[2].Value;
             }
@@ -277,6 +297,7 @@ namespace FrenoySyncer
             {
                 return team.Substring(team.Length - 1);
             }
+            Debug.Assert(false, "This code path is never been tested");
             return null;
         }
 
