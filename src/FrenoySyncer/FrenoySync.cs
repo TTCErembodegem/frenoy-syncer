@@ -149,14 +149,15 @@ namespace FrenoySyncer
                 {
                     Club = _options.FrenoyClub,
                     Season = _options.FrenoySeason,
-                    DivisionId = reeks.FrenoyDivisionId.ToString()
+                    DivisionId = reeks.FrenoyDivisionId.ToString(),
+                    Team = ploeg.Code
                 });
                 foreach (var frenoyMatch in matches.TeamMatchesEntries.Where(x => x.HomeTeam.Trim() != "Vrij" && x.AwayTeam.Trim() != "Vrij"))
                 {
                     Debug.Assert(frenoyMatch.DateSpecified);
                     Debug.Assert(frenoyMatch.TimeSpecified);
 
-                    Kalender kalender = CreateKalenderMatch(reeks, frenoyMatch);
+                    Kalender kalender = CreateKalenderMatch(reeks, frenoyMatch, ploeg.Code);
                     _db.Kalender.Add(kalender);
                 }
                 CommitChanges();
@@ -211,7 +212,7 @@ namespace FrenoySyncer
             return reeks;
         }
 
-        private Kalender CreateKalenderMatch(Reeks reeks, TeamMatchEntryType frenoyMatch)
+        private Kalender CreateKalenderMatch(Reeks reeks, TeamMatchEntryType frenoyMatch, string thuisPloegCode)
         {
             var kalender = new Kalender
             {
@@ -229,8 +230,8 @@ namespace FrenoySyncer
             kalender.UitClubPloegID = GetClubPloegId(reeks.ID, kalender.UitClubID.Value, kalender.UitPloeg);
 
             // In the db the ThuisClubId is always Erembodegem
-            kalender.Thuis = kalender.ThuisClubID == _thuisClubId ? 1 : 0;
-            if (kalender.Thuis == 1)
+            kalender.Thuis = kalender.ThuisClubID == _thuisClubId && kalender.ThuisPloeg == thuisPloegCode ? 1 : 0;
+            if (kalender.Thuis == 0)
             {
                 var thuisClubId = kalender.ThuisClubID;
                 var thuisPloeg = kalender.ThuisPloeg;
@@ -244,9 +245,6 @@ namespace FrenoySyncer
                 kalender.UitPloeg = thuisPloeg;
                 kalender.UitClubPloegID = thuisClubPloegId;
             }
-            // Like wtf but necessary...?
-            kalender.Thuis = kalender.Thuis == 0 ? 1 : 0;
-
             return kalender;
         }
 
