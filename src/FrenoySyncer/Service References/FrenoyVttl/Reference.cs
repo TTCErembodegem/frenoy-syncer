@@ -78,6 +78,22 @@ namespace FrenoySyncer.FrenoyVttl {
         
         [System.ServiceModel.OperationContractAttribute(Action="GetClubs", ReplyAction="*")]
         System.Threading.Tasks.Task<FrenoySyncer.FrenoyVttl.GetClubsResponse1> GetClubsAsync(FrenoySyncer.FrenoyVttl.GetClubsRequest request);
+        
+        // CODEGEN: Generating message contract since the operation GetDivisions is neither RPC nor document wrapped.
+        [System.ServiceModel.OperationContractAttribute(Action="GetDivisions", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        FrenoySyncer.FrenoyVttl.GetDivisionsResponse1 GetDivisions(FrenoySyncer.FrenoyVttl.GetDivisionsRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="GetDivisions", ReplyAction="*")]
+        System.Threading.Tasks.Task<FrenoySyncer.FrenoyVttl.GetDivisionsResponse1> GetDivisionsAsync(FrenoySyncer.FrenoyVttl.GetDivisionsRequest request);
+        
+        // CODEGEN: Generating message contract since the operation GetTournaments is neither RPC nor document wrapped.
+        [System.ServiceModel.OperationContractAttribute(Action="GetTournaments", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        FrenoySyncer.FrenoyVttl.GetTournamentsResponse1 GetTournaments(FrenoySyncer.FrenoyVttl.GetTournamentsRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="GetTournaments", ReplyAction="*")]
+        System.Threading.Tasks.Task<FrenoySyncer.FrenoyVttl.GetTournamentsResponse1> GetTournamentsAsync(FrenoySyncer.FrenoyVttl.GetTournamentsRequest request);
     }
     
     /// <remarks/>
@@ -142,6 +158,153 @@ namespace FrenoySyncer.FrenoyVttl {
             set {
                 this.passwordField = value;
                 this.RaisePropertyChanged("Password");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class TournamentEntryType : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string uniqueIndexField;
+        
+        private string nameField;
+        
+        private string externalIndexField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public string UniqueIndex {
+            get {
+                return this.uniqueIndexField;
+            }
+            set {
+                this.uniqueIndexField = value;
+                this.RaisePropertyChanged("UniqueIndex");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+                this.RaisePropertyChanged("Name");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string ExternalIndex {
+            get {
+                return this.externalIndexField;
+            }
+            set {
+                this.externalIndexField = value;
+                this.RaisePropertyChanged("ExternalIndex");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class DivisionEntryType : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string divisionIdField;
+        
+        private string divisionNameField;
+        
+        private string divisionCategoryField;
+        
+        private string levelField;
+        
+        private string matchTypeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+        public string DivisionId {
+            get {
+                return this.divisionIdField;
+            }
+            set {
+                this.divisionIdField = value;
+                this.RaisePropertyChanged("DivisionId");
+            }
+        }
+        
+        /// <remarks/>
+        public string DivisionName {
+            get {
+                return this.divisionNameField;
+            }
+            set {
+                this.divisionNameField = value;
+                this.RaisePropertyChanged("DivisionName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+        public string DivisionCategory {
+            get {
+                return this.divisionCategoryField;
+            }
+            set {
+                this.divisionCategoryField = value;
+                this.RaisePropertyChanged("DivisionCategory");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+        public string Level {
+            get {
+                return this.levelField;
+            }
+            set {
+                this.levelField = value;
+                this.RaisePropertyChanged("Level");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+        public string MatchType {
+            get {
+                return this.matchTypeField;
+            }
+            set {
+                this.matchTypeField = value;
+                this.RaisePropertyChanged("MatchType");
             }
         }
         
@@ -369,6 +532,456 @@ namespace FrenoySyncer.FrenoyVttl {
             set {
                 this.venueEntriesField = value;
                 this.RaisePropertyChanged("VenueEntries");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class IndividualMatchResultEntryType : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string positionField;
+        
+        private string homePlayerMatchIndexField;
+        
+        private string homePlayerUniqueIndexField;
+        
+        private string awayPlayerMatchIndexField;
+        
+        private string awayPlayerUniqueIndexField;
+        
+        private string homeSetCountField;
+        
+        private string awaySetCountField;
+        
+        private bool isHomeForfeitedField;
+        
+        private bool isHomeForfeitedFieldSpecified;
+        
+        private bool isAwayForfeitedField;
+        
+        private bool isAwayForfeitedFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=0)]
+        public string Position {
+            get {
+                return this.positionField;
+            }
+            set {
+                this.positionField = value;
+                this.RaisePropertyChanged("Position");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=1)]
+        public string HomePlayerMatchIndex {
+            get {
+                return this.homePlayerMatchIndexField;
+            }
+            set {
+                this.homePlayerMatchIndexField = value;
+                this.RaisePropertyChanged("HomePlayerMatchIndex");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=2)]
+        public string HomePlayerUniqueIndex {
+            get {
+                return this.homePlayerUniqueIndexField;
+            }
+            set {
+                this.homePlayerUniqueIndexField = value;
+                this.RaisePropertyChanged("HomePlayerUniqueIndex");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=3)]
+        public string AwayPlayerMatchIndex {
+            get {
+                return this.awayPlayerMatchIndexField;
+            }
+            set {
+                this.awayPlayerMatchIndexField = value;
+                this.RaisePropertyChanged("AwayPlayerMatchIndex");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=4)]
+        public string AwayPlayerUniqueIndex {
+            get {
+                return this.awayPlayerUniqueIndexField;
+            }
+            set {
+                this.awayPlayerUniqueIndexField = value;
+                this.RaisePropertyChanged("AwayPlayerUniqueIndex");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=5)]
+        public string HomeSetCount {
+            get {
+                return this.homeSetCountField;
+            }
+            set {
+                this.homeSetCountField = value;
+                this.RaisePropertyChanged("HomeSetCount");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=6)]
+        public string AwaySetCount {
+            get {
+                return this.awaySetCountField;
+            }
+            set {
+                this.awaySetCountField = value;
+                this.RaisePropertyChanged("AwaySetCount");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public bool IsHomeForfeited {
+            get {
+                return this.isHomeForfeitedField;
+            }
+            set {
+                this.isHomeForfeitedField = value;
+                this.RaisePropertyChanged("IsHomeForfeited");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool IsHomeForfeitedSpecified {
+            get {
+                return this.isHomeForfeitedFieldSpecified;
+            }
+            set {
+                this.isHomeForfeitedFieldSpecified = value;
+                this.RaisePropertyChanged("IsHomeForfeitedSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public bool IsAwayForfeited {
+            get {
+                return this.isAwayForfeitedField;
+            }
+            set {
+                this.isAwayForfeitedField = value;
+                this.RaisePropertyChanged("IsAwayForfeited");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool IsAwayForfeitedSpecified {
+            get {
+                return this.isAwayForfeitedFieldSpecified;
+            }
+            set {
+                this.isAwayForfeitedFieldSpecified = value;
+                this.RaisePropertyChanged("IsAwayForfeitedSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class TeamMatchDoubleTeamEntryType : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string positionField;
+        
+        private string teamField;
+        
+        private bool isForfeitedField;
+        
+        private bool isForfeitedFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=0)]
+        public string Position {
+            get {
+                return this.positionField;
+            }
+            set {
+                this.positionField = value;
+                this.RaisePropertyChanged("Position");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Team {
+            get {
+                return this.teamField;
+            }
+            set {
+                this.teamField = value;
+                this.RaisePropertyChanged("Team");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public bool IsForfeited {
+            get {
+                return this.isForfeitedField;
+            }
+            set {
+                this.isForfeitedField = value;
+                this.RaisePropertyChanged("IsForfeited");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool IsForfeitedSpecified {
+            get {
+                return this.isForfeitedFieldSpecified;
+            }
+            set {
+                this.isForfeitedFieldSpecified = value;
+                this.RaisePropertyChanged("IsForfeitedSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class TeamMatchPlayerEntryType : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string positionField;
+        
+        private string uniqueIndexField;
+        
+        private string firstNameField;
+        
+        private string lastNameField;
+        
+        private string rankingField;
+        
+        private string victoryCountField;
+        
+        private bool isForfeitedField;
+        
+        private bool isForfeitedFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=0)]
+        public string Position {
+            get {
+                return this.positionField;
+            }
+            set {
+                this.positionField = value;
+                this.RaisePropertyChanged("Position");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=1)]
+        public string UniqueIndex {
+            get {
+                return this.uniqueIndexField;
+            }
+            set {
+                this.uniqueIndexField = value;
+                this.RaisePropertyChanged("UniqueIndex");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string FirstName {
+            get {
+                return this.firstNameField;
+            }
+            set {
+                this.firstNameField = value;
+                this.RaisePropertyChanged("FirstName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string LastName {
+            get {
+                return this.lastNameField;
+            }
+            set {
+                this.lastNameField = value;
+                this.RaisePropertyChanged("LastName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string Ranking {
+            get {
+                return this.rankingField;
+            }
+            set {
+                this.rankingField = value;
+                this.RaisePropertyChanged("Ranking");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=5)]
+        public string VictoryCount {
+            get {
+                return this.victoryCountField;
+            }
+            set {
+                this.victoryCountField = value;
+                this.RaisePropertyChanged("VictoryCount");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public bool IsForfeited {
+            get {
+                return this.isForfeitedField;
+            }
+            set {
+                this.isForfeitedField = value;
+                this.RaisePropertyChanged("IsForfeited");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool IsForfeitedSpecified {
+            get {
+                return this.isForfeitedFieldSpecified;
+            }
+            set {
+                this.isForfeitedFieldSpecified = value;
+                this.RaisePropertyChanged("IsForfeitedSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class TeamMatchPlayerListType : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string playerCountField;
+        
+        private string doubleTeamCountField;
+        
+        private TeamMatchPlayerEntryType[] playersField;
+        
+        private TeamMatchDoubleTeamEntryType[] doubleTeamsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=0)]
+        public string PlayerCount {
+            get {
+                return this.playerCountField;
+            }
+            set {
+                this.playerCountField = value;
+                this.RaisePropertyChanged("PlayerCount");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=1)]
+        public string DoubleTeamCount {
+            get {
+                return this.doubleTeamCountField;
+            }
+            set {
+                this.doubleTeamCountField = value;
+                this.RaisePropertyChanged("DoubleTeamCount");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Players", Order=2)]
+        public TeamMatchPlayerEntryType[] Players {
+            get {
+                return this.playersField;
+            }
+            set {
+                this.playersField = value;
+                this.RaisePropertyChanged("Players");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("DoubleTeams", Order=3)]
+        public TeamMatchDoubleTeamEntryType[] DoubleTeams {
+            get {
+                return this.doubleTeamsField;
+            }
+            set {
+                this.doubleTeamsField = value;
+                this.RaisePropertyChanged("DoubleTeams");
             }
         }
         
@@ -898,6 +1511,192 @@ namespace FrenoySyncer.FrenoyVttl {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class TeamMatchDetailsEntryType : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private bool detailsCreatedField;
+        
+        private System.DateTime startTimeField;
+        
+        private bool startTimeFieldSpecified;
+        
+        private System.DateTime endTimeField;
+        
+        private bool endTimeFieldSpecified;
+        
+        private MemberEntryType homeCaptainField;
+        
+        private MemberEntryType awayCaptainField;
+        
+        private MemberEntryType refereeField;
+        
+        private MemberEntryType roomResponsibleField;
+        
+        private TeamMatchPlayerListType homePlayersField;
+        
+        private TeamMatchPlayerListType awayPlayersField;
+        
+        private IndividualMatchResultEntryType[] individualMatchResultsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public bool DetailsCreated {
+            get {
+                return this.detailsCreatedField;
+            }
+            set {
+                this.detailsCreatedField = value;
+                this.RaisePropertyChanged("DetailsCreated");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="time", Order=1)]
+        public System.DateTime StartTime {
+            get {
+                return this.startTimeField;
+            }
+            set {
+                this.startTimeField = value;
+                this.RaisePropertyChanged("StartTime");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool StartTimeSpecified {
+            get {
+                return this.startTimeFieldSpecified;
+            }
+            set {
+                this.startTimeFieldSpecified = value;
+                this.RaisePropertyChanged("StartTimeSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="time", Order=2)]
+        public System.DateTime EndTime {
+            get {
+                return this.endTimeField;
+            }
+            set {
+                this.endTimeField = value;
+                this.RaisePropertyChanged("EndTime");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool EndTimeSpecified {
+            get {
+                return this.endTimeFieldSpecified;
+            }
+            set {
+                this.endTimeFieldSpecified = value;
+                this.RaisePropertyChanged("EndTimeSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public MemberEntryType HomeCaptain {
+            get {
+                return this.homeCaptainField;
+            }
+            set {
+                this.homeCaptainField = value;
+                this.RaisePropertyChanged("HomeCaptain");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public MemberEntryType AwayCaptain {
+            get {
+                return this.awayCaptainField;
+            }
+            set {
+                this.awayCaptainField = value;
+                this.RaisePropertyChanged("AwayCaptain");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public MemberEntryType Referee {
+            get {
+                return this.refereeField;
+            }
+            set {
+                this.refereeField = value;
+                this.RaisePropertyChanged("Referee");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public MemberEntryType RoomResponsible {
+            get {
+                return this.roomResponsibleField;
+            }
+            set {
+                this.roomResponsibleField = value;
+                this.RaisePropertyChanged("RoomResponsible");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public TeamMatchPlayerListType HomePlayers {
+            get {
+                return this.homePlayersField;
+            }
+            set {
+                this.homePlayersField = value;
+                this.RaisePropertyChanged("HomePlayers");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public TeamMatchPlayerListType AwayPlayers {
+            get {
+                return this.awayPlayersField;
+            }
+            set {
+                this.awayPlayersField = value;
+                this.RaisePropertyChanged("AwayPlayers");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("IndividualMatchResults", Order=9)]
+        public IndividualMatchResultEntryType[] IndividualMatchResults {
+            get {
+                return this.individualMatchResultsField;
+            }
+            set {
+                this.individualMatchResultsField = value;
+                this.RaisePropertyChanged("IndividualMatchResults");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://api.frenoy.net/TabTAPI")]
     public partial class TeamMatchEntryType : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string divisionNameField;
@@ -931,6 +1730,8 @@ namespace FrenoySyncer.FrenoyVttl {
         private string nextWeekNameField;
         
         private string previousWeekNameField;
+        
+        private TeamMatchDetailsEntryType matchDetailsField;
         
         /// <remarks/>
         public string DivisionName {
@@ -1111,6 +1912,17 @@ namespace FrenoySyncer.FrenoyVttl {
             set {
                 this.previousWeekNameField = value;
                 this.RaisePropertyChanged("PreviousWeekName");
+            }
+        }
+        
+        /// <remarks/>
+        public TeamMatchDetailsEntryType MatchDetails {
+            get {
+                return this.matchDetailsField;
+            }
+            set {
+                this.matchDetailsField = value;
+                this.RaisePropertyChanged("MatchDetails");
             }
         }
         
@@ -1483,6 +2295,14 @@ namespace FrenoySyncer.FrenoyVttl {
         
         private string databaseField;
         
+        private string requestorIpField;
+        
+        private string consumedTicksField;
+        
+        private string currentQuotaField;
+        
+        private string allowedQuotaField;
+        
         /// <remarks/>
         public System.DateTime Timestamp {
             get {
@@ -1535,6 +2355,53 @@ namespace FrenoySyncer.FrenoyVttl {
             set {
                 this.databaseField = value;
                 this.RaisePropertyChanged("Database");
+            }
+        }
+        
+        /// <remarks/>
+        public string RequestorIp {
+            get {
+                return this.requestorIpField;
+            }
+            set {
+                this.requestorIpField = value;
+                this.RaisePropertyChanged("RequestorIp");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+        public string ConsumedTicks {
+            get {
+                return this.consumedTicksField;
+            }
+            set {
+                this.consumedTicksField = value;
+                this.RaisePropertyChanged("ConsumedTicks");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+        public string CurrentQuota {
+            get {
+                return this.currentQuotaField;
+            }
+            set {
+                this.currentQuotaField = value;
+                this.RaisePropertyChanged("CurrentQuota");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+        public string AllowedQuota {
+            get {
+                return this.allowedQuotaField;
+            }
+            set {
+                this.allowedQuotaField = value;
+                this.RaisePropertyChanged("AllowedQuota");
             }
         }
         
@@ -2866,6 +3733,297 @@ namespace FrenoySyncer.FrenoyVttl {
         }
     }
     
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class GetDivisions : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CredentialsType credentialsField;
+        
+        private string seasonField;
+        
+        private string levelField;
+        
+        private ShowDivisionNameType showDivisionNameField;
+        
+        private bool showDivisionNameFieldSpecified;
+        
+        /// <remarks/>
+        public CredentialsType Credentials {
+            get {
+                return this.credentialsField;
+            }
+            set {
+                this.credentialsField = value;
+                this.RaisePropertyChanged("Credentials");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+        public string Season {
+            get {
+                return this.seasonField;
+            }
+            set {
+                this.seasonField = value;
+                this.RaisePropertyChanged("Season");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+        public string Level {
+            get {
+                return this.levelField;
+            }
+            set {
+                this.levelField = value;
+                this.RaisePropertyChanged("Level");
+            }
+        }
+        
+        /// <remarks/>
+        public ShowDivisionNameType ShowDivisionName {
+            get {
+                return this.showDivisionNameField;
+            }
+            set {
+                this.showDivisionNameField = value;
+                this.RaisePropertyChanged("ShowDivisionName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ShowDivisionNameSpecified {
+            get {
+                return this.showDivisionNameFieldSpecified;
+            }
+            set {
+                this.showDivisionNameFieldSpecified = value;
+                this.RaisePropertyChanged("ShowDivisionNameSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class GetDivisionsResponse : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string divisionCountField;
+        
+        private DivisionEntryType[] divisionEntriesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=0)]
+        public string DivisionCount {
+            get {
+                return this.divisionCountField;
+            }
+            set {
+                this.divisionCountField = value;
+                this.RaisePropertyChanged("DivisionCount");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("DivisionEntries", Order=1)]
+        public DivisionEntryType[] DivisionEntries {
+            get {
+                return this.divisionEntriesField;
+            }
+            set {
+                this.divisionEntriesField = value;
+                this.RaisePropertyChanged("DivisionEntries");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetDivisionsRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://api.frenoy.net/TabTAPI", Order=0)]
+        public FrenoySyncer.FrenoyVttl.GetDivisions GetDivisions;
+        
+        public GetDivisionsRequest() {
+        }
+        
+        public GetDivisionsRequest(FrenoySyncer.FrenoyVttl.GetDivisions GetDivisions) {
+            this.GetDivisions = GetDivisions;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetDivisionsResponse1 {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://api.frenoy.net/TabTAPI", Order=0)]
+        public FrenoySyncer.FrenoyVttl.GetDivisionsResponse GetDivisionsResponse;
+        
+        public GetDivisionsResponse1() {
+        }
+        
+        public GetDivisionsResponse1(FrenoySyncer.FrenoyVttl.GetDivisionsResponse GetDivisionsResponse) {
+            this.GetDivisionsResponse = GetDivisionsResponse;
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class GetTournaments : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private CredentialsType credentialsField;
+        
+        private string seasonField;
+        
+        /// <remarks/>
+        public CredentialsType Credentials {
+            get {
+                return this.credentialsField;
+            }
+            set {
+                this.credentialsField = value;
+                this.RaisePropertyChanged("Credentials");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer")]
+        public string Season {
+            get {
+                return this.seasonField;
+            }
+            set {
+                this.seasonField = value;
+                this.RaisePropertyChanged("Season");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://api.frenoy.net/TabTAPI")]
+    public partial class GetTournamentsResponse : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string tournamentCountField;
+        
+        private TournamentEntryType[] tournamentEntriesField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="integer", Order=0)]
+        public string TournamentCount {
+            get {
+                return this.tournamentCountField;
+            }
+            set {
+                this.tournamentCountField = value;
+                this.RaisePropertyChanged("TournamentCount");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("TournamentEntries", Order=1)]
+        public TournamentEntryType[] TournamentEntries {
+            get {
+                return this.tournamentEntriesField;
+            }
+            set {
+                this.tournamentEntriesField = value;
+                this.RaisePropertyChanged("TournamentEntries");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetTournamentsRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://api.frenoy.net/TabTAPI", Order=0)]
+        public FrenoySyncer.FrenoyVttl.GetTournaments GetTournaments;
+        
+        public GetTournamentsRequest() {
+        }
+        
+        public GetTournamentsRequest(FrenoySyncer.FrenoyVttl.GetTournaments GetTournaments) {
+            this.GetTournaments = GetTournaments;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class GetTournamentsResponse1 {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://api.frenoy.net/TabTAPI", Order=0)]
+        public FrenoySyncer.FrenoyVttl.GetTournamentsResponse GetTournamentsResponse;
+        
+        public GetTournamentsResponse1() {
+        }
+        
+        public GetTournamentsResponse1(FrenoySyncer.FrenoyVttl.GetTournamentsResponse GetTournamentsResponse) {
+            this.GetTournamentsResponse = GetTournamentsResponse;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface TabTAPI_PortTypeChannel : FrenoySyncer.FrenoyVttl.TabTAPI_PortType, System.ServiceModel.IClientChannel {
     }
@@ -3075,6 +4233,52 @@ namespace FrenoySyncer.FrenoyVttl {
             FrenoySyncer.FrenoyVttl.GetClubsRequest inValue = new FrenoySyncer.FrenoyVttl.GetClubsRequest();
             inValue.GetClubs = GetClubs;
             return ((FrenoySyncer.FrenoyVttl.TabTAPI_PortType)(this)).GetClubsAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        FrenoySyncer.FrenoyVttl.GetDivisionsResponse1 FrenoySyncer.FrenoyVttl.TabTAPI_PortType.GetDivisions(FrenoySyncer.FrenoyVttl.GetDivisionsRequest request) {
+            return base.Channel.GetDivisions(request);
+        }
+        
+        public FrenoySyncer.FrenoyVttl.GetDivisionsResponse GetDivisions(FrenoySyncer.FrenoyVttl.GetDivisions GetDivisions1) {
+            FrenoySyncer.FrenoyVttl.GetDivisionsRequest inValue = new FrenoySyncer.FrenoyVttl.GetDivisionsRequest();
+            inValue.GetDivisions = GetDivisions1;
+            FrenoySyncer.FrenoyVttl.GetDivisionsResponse1 retVal = ((FrenoySyncer.FrenoyVttl.TabTAPI_PortType)(this)).GetDivisions(inValue);
+            return retVal.GetDivisionsResponse;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<FrenoySyncer.FrenoyVttl.GetDivisionsResponse1> FrenoySyncer.FrenoyVttl.TabTAPI_PortType.GetDivisionsAsync(FrenoySyncer.FrenoyVttl.GetDivisionsRequest request) {
+            return base.Channel.GetDivisionsAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<FrenoySyncer.FrenoyVttl.GetDivisionsResponse1> GetDivisionsAsync(FrenoySyncer.FrenoyVttl.GetDivisions GetDivisions) {
+            FrenoySyncer.FrenoyVttl.GetDivisionsRequest inValue = new FrenoySyncer.FrenoyVttl.GetDivisionsRequest();
+            inValue.GetDivisions = GetDivisions;
+            return ((FrenoySyncer.FrenoyVttl.TabTAPI_PortType)(this)).GetDivisionsAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        FrenoySyncer.FrenoyVttl.GetTournamentsResponse1 FrenoySyncer.FrenoyVttl.TabTAPI_PortType.GetTournaments(FrenoySyncer.FrenoyVttl.GetTournamentsRequest request) {
+            return base.Channel.GetTournaments(request);
+        }
+        
+        public FrenoySyncer.FrenoyVttl.GetTournamentsResponse GetTournaments(FrenoySyncer.FrenoyVttl.GetTournaments GetTournaments1) {
+            FrenoySyncer.FrenoyVttl.GetTournamentsRequest inValue = new FrenoySyncer.FrenoyVttl.GetTournamentsRequest();
+            inValue.GetTournaments = GetTournaments1;
+            FrenoySyncer.FrenoyVttl.GetTournamentsResponse1 retVal = ((FrenoySyncer.FrenoyVttl.TabTAPI_PortType)(this)).GetTournaments(inValue);
+            return retVal.GetTournamentsResponse;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<FrenoySyncer.FrenoyVttl.GetTournamentsResponse1> FrenoySyncer.FrenoyVttl.TabTAPI_PortType.GetTournamentsAsync(FrenoySyncer.FrenoyVttl.GetTournamentsRequest request) {
+            return base.Channel.GetTournamentsAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<FrenoySyncer.FrenoyVttl.GetTournamentsResponse1> GetTournamentsAsync(FrenoySyncer.FrenoyVttl.GetTournaments GetTournaments) {
+            FrenoySyncer.FrenoyVttl.GetTournamentsRequest inValue = new FrenoySyncer.FrenoyVttl.GetTournamentsRequest();
+            inValue.GetTournaments = GetTournaments;
+            return ((FrenoySyncer.FrenoyVttl.TabTAPI_PortType)(this)).GetTournamentsAsync(inValue);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace FrenoySyncer
     {
         //const string FrenoyVttlWsdlUrl = "http://api.vttl.be/0.7/?wsdl";
         //const string FrenoySportaWsdlUrl = "http://tafeltennis.sporcrea.be/api/?wsdl";
+        // Export: reeks, clubploeg, clubploegspeler and kalender
 
         #region Configuration
         private static FrenoySyncOptions VttlOptions => new FrenoySyncOptions
@@ -52,17 +53,17 @@ namespace FrenoySyncer
 
         static void Main(string[] args)
         {
-            //using (var vttl = new FrenoySync(VttlOptions))
-            //{
-            //    vttl.Sync();
-            //    vttl.WriteLog();
-            //}
-
-            using (var sporta = new FrenoySync(SportaOptions, false))
+            using (var vttl = new FrenoySync(VttlOptions))
             {
-                sporta.Sync();
-                sporta.WriteLog();
+                vttl.Sync();
+                vttl.WriteLog();
             }
+
+            //using (var sporta = new FrenoySync(SportaOptions, false))
+            //{
+            //    sporta.Sync();
+            //    sporta.WriteLog();
+            //}
 
             //Console.WriteLine("All done");
             //Console.ReadLine();

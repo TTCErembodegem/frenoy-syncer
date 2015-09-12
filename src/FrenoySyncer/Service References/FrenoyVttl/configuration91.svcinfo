@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="NDPOAv0tTgEvhjHhT8/LEgT0u8s=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="O15dhn5w6PSkSDZvf1boeN6J6uE=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="TabTAPI_Binding">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="TabTAPI_Port" contract="FrenoyVttl.TabTAPI_PortType" bindingType="basicHttpBinding" address="http://tafeltennis.sporcrea.be/api/index.php?s=" bindingConfiguration="TabTAPI_Binding">
+    <endpoint name="TabTAPI_Port" contract="FrenoyVttl.TabTAPI_PortType" bindingType="basicHttpBinding" address="http://api.vttl.be/0.7/index.php?s=vttl" bindingConfiguration="TabTAPI_Binding">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://tafeltennis.sporcrea.be/api/index.php?s=</serializedValue>
+          <serializedValue>http://api.vttl.be/0.7/index.php?s=vttl</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

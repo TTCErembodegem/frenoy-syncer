@@ -93,6 +93,12 @@
     <None Include="Service References\FrenoyVttl\FrenoySyncer.FrenoyVttl.GetDivisionRankingResponse1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\FrenoyVttl\FrenoySyncer.FrenoyVttl.GetDivisionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\FrenoyVttl\FrenoySyncer.FrenoyVttl.GetDivisionsResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\FrenoyVttl\FrenoySyncer.FrenoyVttl.GetMatchesResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -109,6 +115,12 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\FrenoyVttl\FrenoySyncer.FrenoyVttl.GetSeasonsResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\FrenoyVttl\FrenoySyncer.FrenoyVttl.GetTournamentsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\FrenoyVttl\FrenoySyncer.FrenoyVttl.GetTournamentsResponse1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\FrenoyVttl\FrenoySyncer.FrenoyVttl.TestResponse.datasource">
@@ -147,7 +159,7 @@
     <None Include="Service References\FrenoyVttl\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\FrenoyVttl\item11.wsdl" />
+    <None Include="Service References\FrenoyVttl\item.wsdl" />
     <None Include="Service References\FrenoyVttl\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
