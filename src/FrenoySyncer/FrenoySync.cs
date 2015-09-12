@@ -106,28 +106,30 @@ namespace FrenoySyncer
             foreach (var frenoyTeam in frenoyTeams.TeamEntries)
             {
                 // Create new division=reeks for each team in the club
-                Reeks reeks = CreateReeks(frenoyTeam);
-                _db.Reeksen.Add(reeks);
-                CommitChanges();
+                // Check if it already exists: Two teams could play in the same division
+                Reeks reeks = _db.Reeksen.SingleOrDefault(x => x.FrenoyDivisionId.ToString() == frenoyTeam.DivisionId);
+                if (reeks == null)
+                {
+                    reeks = CreateReeks(frenoyTeam);
+                    _db.Reeksen.Add(reeks);
+                    CommitChanges();
+
+                    // Create the teams in the new division=reeks
+                    var frenoyDivision = _frenoy.GetDivisionRanking(new GetDivisionRankingRequest
+                    {
+                        DivisionId = frenoyTeam.DivisionId
+                    });
+                    foreach (var frenoyTeamsInDivision in frenoyDivision.RankingEntries)
+                    {
+                        var clubPloeg = CreateClubPloeg(reeks, frenoyTeamsInDivision);
+                        _db.ClubPloegen.Add(clubPloeg);
+                    }
+                    CommitChanges();
+                }
+                
                 
 
-
-
-                // Create the teams in the new division=reeks
-                var frenoyDivision = _frenoy.GetDivisionRanking(new GetDivisionRankingRequest
-                {
-                    DivisionId = frenoyTeam.DivisionId
-                });
-                foreach (var frenoyTeamsInDivision in frenoyDivision.RankingEntries)
-                {
-                    var clubPloeg = CreateClubPloeg(reeks, frenoyTeamsInDivision);
-                    _db.ClubPloegen.Add(clubPloeg);
-                }
-                CommitChanges();
-
-
-
-                // Add players to the home team
+                // Add Erembodegem players to the home team
                 var ploeg = _db.ClubPloegen.Single(x => x.ClubId == _thuisClubId && x.ReeksId == reeks.ID && x.Code == frenoyTeam.Team);
                 var players = _options.Players[ploeg.Code];
                 foreach (var playerName in players)
