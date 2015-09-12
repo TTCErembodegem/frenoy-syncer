@@ -244,6 +244,8 @@ namespace FrenoySyncer
                 kalender.UitPloeg = thuisPloeg;
                 kalender.UitClubPloegID = thuisClubPloegId;
             }
+            // Like wtf but necessary...?
+            kalender.Thuis = kalender.Thuis == 0 ? 1 : 0;
 
             return kalender;
         }
