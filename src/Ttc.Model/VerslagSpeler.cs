@@ -17,7 +17,7 @@ namespace Ttc.Model
         public int VerslagID { get; set; }
         
         // Foreign Key voor Speler
-        public int SpelerID { get; set; }
+        public int? SpelerID { get; set; }
 
         [ForeignKey("VerslagID")]
         public Verslag Verslag { get; set; }

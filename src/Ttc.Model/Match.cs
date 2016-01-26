@@ -16,7 +16,7 @@ namespace Ttc.Model
 
         public DateTime Datum { get; set; }
 
-        public DateTime Uur { get; set; }
+        public TimeSpan Uur { get; set; }
 
         public int? ThuisClubID { get; set; }
 

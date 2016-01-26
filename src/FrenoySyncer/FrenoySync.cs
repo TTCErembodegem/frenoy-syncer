@@ -23,6 +23,8 @@ namespace FrenoySyncer
         private readonly bool _isVttl;
         //private readonly FileInfo _logFileInfo;
         //private readonly StreamWriter _logFile;
+
+        private const bool MapTeamPlayers = false;
         #endregion
 
         #region Constructor
@@ -126,25 +128,24 @@ namespace FrenoySyncer
                     }
                     CommitChanges();
                 }
-                
-                
 
                 // Add Erembodegem players to the home team
                 var ploeg = _db.ClubPloegen.Single(x => x.ClubId == _thuisClubId && x.ReeksId == reeks.ID && x.Code == frenoyTeam.Team);
-                var players = _options.Players[ploeg.Code];
-                foreach (var playerName in players)
+                if (MapTeamPlayers)
                 {
-                    var clubPloegSpeler = new ClubPloegSpeler
+                    var players = _options.Players[ploeg.Code];
+                    foreach (var playerName in players)
                     {
-                        Kapitein = playerName == players.First() ? 1 : 0,
-                        SpelerID = GetSpelerId(playerName),
-                        ClubPloegID = ploeg.ID
-                    };
-                    _db.ClubPloegSpelers.Add(clubPloegSpeler);
+                        var clubPloegSpeler = new ClubPloegSpeler
+                        {
+                            Kapitein = playerName == players.First() ? 1 : 0,
+                            SpelerID = GetSpelerId(playerName),
+                            ClubPloegID = ploeg.ID
+                        };
+                        _db.ClubPloegSpelers.Add(clubPloegSpeler);
+                    }
+                    CommitChanges();
                 }
-                CommitChanges();
-
-
 
                 // Create the matches=kalender table in the new  division=reeks
                 var matches = _frenoy.GetMatches(new GetMatchesRequest
@@ -152,18 +153,96 @@ namespace FrenoySyncer
                     Club = _options.FrenoyClub,
                     Season = _options.FrenoySeason,
                     DivisionId = reeks.FrenoyDivisionId.ToString(),
-                    Team = ploeg.Code
+                    Team = ploeg.Code,
+                    WithDetailsSpecified = true,
+                    WithDetails = true,
                 });
-                foreach (var frenoyMatch in matches.TeamMatchesEntries.Where(x => x.HomeTeam.Trim() != "Vrij" && x.AwayTeam.Trim() != "Vrij"))
+                int newVerlsagId = 0;
+                foreach (TeamMatchEntryType frenoyMatch in matches.TeamMatchesEntries.Where(x => x.HomeTeam.Trim() != "Vrij" && x.AwayTeam.Trim() != "Vrij"))
                 {
                     Debug.Assert(frenoyMatch.DateSpecified);
                     Debug.Assert(frenoyMatch.TimeSpecified);
 
-                    Kalender kalender = CreateKalenderMatch(reeks, frenoyMatch, ploeg.Code);
-                    _db.Kalender.Add(kalender);
+                    // Kalender entries
+                    var kalender = _db.Kalender.SingleOrDefault(x => x.FrenoyMatchId == frenoyMatch.MatchId);
+                    if (kalender == null)
+                    {
+                        kalender = CreateKalenderMatch(reeks, frenoyMatch, ploeg.Code);
+                        _db.Kalender.Add(kalender);
+                    }
+
+                    // Wedstrijdverslagen
+                    if (frenoyMatch.MatchDetails != null)
+                    {
+                        var verslag = _db.Verslagen.SingleOrDefault(x => x.KalenderID == kalender.ID);
+                        if (verslag == null)
+                        {
+                            verslag = new Verslag
+                            {
+                                ID = newVerlsagId--,
+                                Kalender = kalender,
+                                KalenderID = kalender.ID,
+                                Details = 0,
+                                SpelerID = 4, // Dirk DS
+                                UitslagThuis = int.Parse(frenoyMatch.Score.Substring(0, frenoyMatch.Score.IndexOf("-"))),
+                                UitslagUit = int.Parse(frenoyMatch.Score.Substring(frenoyMatch.Score.IndexOf("-") + 1)),
+                                WO = 0 // TODO: Don't add verslag for WO (will crash around here probably:)
+                            };
+                            _db.Verslagen.Add(verslag);
+                        }
+
+                        var oldVerslagSpelers = _db.SpelersVerslag.Where(x => x.VerslagID == verslag.ID).ToArray();
+                        _db.SpelersVerslag.RemoveRange(oldVerslagSpelers);
+
+                        AddVerslagPlayers(frenoyMatch.MatchDetails.HomePlayers.Players, verslag, true);
+                        AddVerslagPlayers(frenoyMatch.MatchDetails.AwayPlayers.Players, verslag, false);
+                    }
+                    CommitChanges();
                 }
-                CommitChanges();
             }
+        }
+
+        private void AddVerslagPlayers(TeamMatchPlayerEntryType[] players, Verslag verslag, bool thuisSpeler)
+        {
+            if (!_isVttl)
+            {
+                // Sporta API does not (yet?) return MatchDetails
+                return;
+            }
+
+            foreach (var frenoyVerslagSpeler in players)
+            {
+                //TODO: we zaten hier   
+                // Moeten ook de positie opslaan
+                // En UniqueIndex
+
+                VerslagSpeler verslagSpeler = new VerslagSpeler
+                {
+                    Verslag = verslag,
+                    VerslagID = verslag.ID,
+                    Klassement = frenoyVerslagSpeler.Ranking,
+                    Thuis = thuisSpeler ? 1 : 0,
+                    Winst = int.Parse(frenoyVerslagSpeler.VictoryCount),
+                    SpelerNaam = GetSpelerNaam(frenoyVerslagSpeler)
+                };
+                var dbPlayer = _db.Spelers.SingleOrDefault(x => x.ComputerNummerVTTL.HasValue && x.ComputerNummerVTTL.Value.ToString() == frenoyVerslagSpeler.UniqueIndex);
+                if (dbPlayer != null)
+                {
+                    verslagSpeler.SpelerID = dbPlayer.ID;
+                    if (!string.IsNullOrWhiteSpace(dbPlayer.NaamKort))
+                    {
+                        verslagSpeler.SpelerNaam = dbPlayer.NaamKort;
+                    }
+                }
+
+                _db.SpelersVerslag.Add(verslagSpeler);
+            }
+        }
+
+        private static string GetSpelerNaam(TeamMatchPlayerEntryType frenoyVerslagSpeler)
+        {
+            System.Globalization.TextInfo ti = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
+            return ti.ToTitleCase((frenoyVerslagSpeler.FirstName + " " + frenoyVerslagSpeler.LastName).ToLowerInvariant());
         }
         #endregion
 
@@ -220,7 +299,7 @@ namespace FrenoySyncer
             {
                 FrenoyMatchId = frenoyMatch.MatchId,
                 Datum = frenoyMatch.Date,
-                Uur = frenoyMatch.Time,
+                Uur = new TimeSpan(frenoyMatch.Time.Hour, 0, 0),
                 ThuisClubID = GetClubId(frenoyMatch.HomeClub),
                 ThuisPloeg = ExtractTeamCodeFromFrenoyName(frenoyMatch.HomeTeam),
                 UitClubID = GetClubId(frenoyMatch.AwayClub),
